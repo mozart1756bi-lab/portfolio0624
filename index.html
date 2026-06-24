@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer Portfolio | Research & Logical Writing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            /* Color Scheme */
+            --main-color: #2C3E50; /* Dark Blue */
+            --accent-color: #E74C3C; /* Red */
+            --bg-color: #ECF0F1;   /* Light Gray */
+            --text-color: #2C3E50;
+            --card-bg: #FFFFFF;
+            --header-bg: rgba(236, 240, 241, 0.95);
+            
+            /* Typography */
+            --font-jp: 'Noto Sans JP', sans-serif;
+            --font-en: 'Montserrat', sans-serif;
+            
+            /* Transitions */
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Override */
+        [data-theme="dark"] {
+            --main-color: #ECF0F1;
+            --bg-color: #1a252f; /* Darker shade for contrast */
+            --text-color: #ECF0F1;
+            --card-bg: #2C3E50;
+            --header-bg: rgba(26, 37, 47, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-jp);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            transition: var(--transition);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-family: var(--font-en);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            border: none;
+            background: none;
+            padding: 0.5rem;
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 1rem;
+            background-image: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); /* Sample Background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ECF0F1; /* Always light text in hero */
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-en);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards 0.5s;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards 0.8s;
+        }
+
+        .hero-sub {
+            display: block;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* --- Common Section Styles --- */
+        section {
+            padding: 6rem 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-en);
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        /* Scroll Animation Class */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* --- About Section --- */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .profile-img-wrapper {
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .strong-point {
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .strong-point h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-info {
+            font-size: 0.9rem;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* --- Skills Section --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-tag {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .skill-tag:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* --- Works Section --- */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .work-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .work-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .work-cat {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .work-link {
+            display: inline-block;
+            margin-top: auto;
+            color: var(--text-color);
+            font-weight: 500;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 2px;
+        }
+
+        /* --- Contact Section --- */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-form {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: var(--font-jp);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background-color: #c0392b;
+        }
+
+        .social-links {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .social-icon:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--main-color);
+            color: #ECF0F1;
+            font-size: 0.9rem;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .about-container {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+
+            .profile-img-wrapper {
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            nav {
+                display: none; /* In real production, would implement hamburger menu */
+            }
+            
+            /* Simple mobile nav for this demo */
+            header {
+                justify-content: space-between;
+            }
+            
+            nav.active {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background-color: var(--header-bg);
+                padding: 1rem;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: var(--text-color);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">WRITER.</div>
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#works">Works</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Research, Logical and<br>Correct Writing</h1>
+            <p>
+                <span class="hero-sub">25年の化学系技術職経験 × 資料作成のプロ</span><br><br>
+                企業の想いが「伝わる」形にします。<br>
+                記事の執筆もお任せください。
+            </p>
+        </div>
+    </section>
+
+    <section id="about" class="fade-in-section">
+        <h2 class="section-title">Introduction</h2>
+        <div class="about-container">
+            <div class="profile-img-wrapper">
+                <img src="profile-illustration.png" alt="50歳の日本人男性（眼鏡なし、爽やかな感じ）のイラスト" class="profile-img">
+            </div>
+            <div class="about-text">
+                <h3>緻密なリサーチと論理的構成力</h3>
+                <p>プロフィールをご覧いただき、ありがとうございます。<br>
+                現役の化学系エンジニアとして25年以上、本業で数多くの報告書やプレゼン資料を作成してきました。「複雑な情報を、誰にでも分かりやすく言語化・図解すること」を得意としています。</p>
+                
+                <p>単なるライティングだけでなく、見栄えの良いスライド作成や論理的な資料構成も一括でお引き受け可能です。</p>
+
+                <div class="strong-point">
+                    <h4>【私の強み】</h4>
+                    <ul>
+                        <li><strong>理系専門職の深い知見：</strong> 自然科学、環境問題、製造技術に関する専門的な記事作成が可能です。</li>
+                        <li><strong>高品質なスライド作成：</strong> 「背景・目的」から「結論」へと導く論理的な構成（PREP法など）に加え、視覚的なわかりやすさを追求します。</li>
+                        <li><strong>幅広い執筆テーマ：</strong> 旅行、英語学習、メンタルヘルスなど実体験に基づいた執筆、SEO記事作成も対応可能です。</li>
+                    </ul>
+                </div>
+
+                <div class="strong-point">
+                    <h4>【お約束】</h4>
+                    <p>エンジニアならではの緻密なリサーチに基づき、正確な情報をお届けします。<br>納期遵守はもちろん、丁寧かつ迅速なレスポンスを徹底いたします。</p>
+                </div>
+
+                <div class="schedule-info">
+                    <strong>【稼働時間】</strong><br>
+                    平日：19:00~22:00 / 土日：10:00~16:00（約15~20時間/週）<br>
+                    これまでの受注案件は18件です。（2025年10月より始動）
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="fade-in-section">
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-container">
+            <span class="skill-tag">校正・校閲</span>
+            <span class="skill-tag">インタビュー</span>
+            <span class="skill-tag">ライティング</span>
+            <span class="skill-tag">執筆</span>
+            <span class="skill-tag">翻訳</span>
+            <span class="skill-tag">写真加工</span>
+            <span class="skill-tag">技術翻訳</span>
+            <span class="skill-tag">マニュアルライティング</span>
+            <span class="skill-tag">資料作成(PPT, Google Slide etc.)</span>
+        </div>
+    </section>
+
+    <section id="works" class="fade-in-section">
+        <h2 class="section-title">Selected Works</h2>
+        <p style="text-align:center; margin-bottom:2rem;">これまでの受注案件は18件です。</p>
+        <div class="works-grid">
+            <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 1</span>
+                        <h3 class="work-title">クラウドワークス プロフィール</h3>
+                        <p>「ポートフォリオ・経歴」タブにて、活動実績と評価をご覧いただけます。</p>
+                    </div>
+                    <a href="https://crowdworks.jp/public/employees/6593587?ref=login_header" target="_blank" class="work-link">View Page <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 2</span>
+                        <h3 class="work-title">note 執筆記事</h3>
+                        <p>個人的な考察やエッセイなどを掲載しています。</p>
+                    </div>
+                    <a href="https://note.com/joyful_cougar134" target="_blank" class="work-link">View Page <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 3</span>
+                        <h3 class="work-title">気候変動がベトナム経済に与える多面的リスク</h3>
+                        <p>気候変動がベトナム経済（農産業）などに及ぼす影響・リスクについて述べています（Google Document）。</p>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1Azc8FaCTbSg6rJM15N_z0VA1K-vXQO5rECbc9XvMhNU/edit?usp=sharing" target="_blank" class="work-link">View Document <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            
+            <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 4</span>
+                        <h3 class="work-title">汎用3Dプリンターで作成した排水経路と水漏れ対策</h3>
+                        <p>専門知識を活かした技術資料のサンプルです（Google Slide）。</p>
+                    </div>
+                    <a href="https://docs.google.com/presentation/d/1DGxUxCb6z_-knmSdQXe6yncCxzxR8iZtcnZvnQNiFDY/edit?usp=drivesdk" target="_blank" class="work-link">View Document <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+   
+            <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 5</span>
+                        <h3 class="work-title">地球温暖化と環境技術</h3>
+                        <p>専門知識を活かした技術資料のサンプルです（Google Slide）。</p>
+                    </div>
+                    <a href="https://docs.google.com/presentation/d/1sXYMS7MRZHUYzqfcR4Uj5_rU4INSGwat5NW4S4BBLqY/edit?usp=sharing" target="_blank" class="work-link">View Document <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+    <article class="work-card">
+                <div class="work-content">
+                    <div>
+                        <span class="work-cat">Case 6</span>
+                        <h3 class="work-title">マレーシア旅程提案資料</h3>
+                        <p>マレーシア旅行の旅程提案資料です（Google Slide）。</p>
+                    </div>
+                    <a href="https://docs.google.com/presentation/d/1LQAPvjILOtrvy1jblKz0TI23DU9Fd-Vu4D0kIoYLbp0/edit?usp=sharing" target="_blank" class="work-link">View Document <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </section>
+    
+    <section id="contact" class="fade-in-section">
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="contact-container">
+            <p>制作のご依頼、お見積り、その他ご相談はお気軽にどうぞ。<br>3営業日以内に返信致します。</p>
+            
+            <form class="contact-form" action="#" onsubmit="event.preventDefault(); alert('デモサイトのため送信されません');">
+                <div class="form-group">
+                    <label for="name">お名前</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">お問い合わせ内容</label>
+                    <textarea id="message" rows="5" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">送信する</button>
+            </form>
+
+            <div class="social-links">
+                <a href="https://twitter.com/Manabu20104321" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i> @Manabu20104321
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Writer Portfolio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- Dark Mode Toggle ---
+        const toggleBtn = document.getElementById('theme-toggle');
+        const icon = toggleBtn.querySelector('i');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            let theme = 'light';
+            if (!document.body.hasAttribute('data-theme')) {
+                document.body.setAttribute('data-theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                theme = 'dark';
+            } else {
+                document.body.removeAttribute('data-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // --- Mobile Menu Toggle ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // --- Scroll Animation Observer ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Smooth Scrolling ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navMenu.classList.remove('active'); // Close mobile menu on click
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
