@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio-local",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "3100", "--directory", "C:\\Users\\mozar\\.claude\\Portfolio"],
+      "port": 3100
+    }
+  ]
+}
